@@ -37,7 +37,7 @@ def load_dataloader(model_type, data_type, neg_type, datasets):
 def load_parameters(model_type, lr, batch_size, gpu_num):
     model   = CNN(Skeleton()) if model_type == 'cnn' else SNN(Skeleton())
     loss_fn = nn.BCELoss() if model_type == 'cnn' else ContrastiveLoss()
-    device  = torch.device("cuda:{}".format(gpu_num))
+    device  = torch.device("cpu")
     optimizer    = optim.Adam(model.parameters(), lr=lr)
     scheduler    = lr_scheduler.StepLR(optimizer, 8, gamma=0.1, last_epoch=-1)
     

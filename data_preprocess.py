@@ -15,7 +15,7 @@ from neural_loop_combiner.dataset.pipeline import Pipeline
 def load_tracks(col_tracks):
     
     int_dir    = settings.INT_DIR
-    int_files  = [int_file for int_file in os.listdir(int_dir) if int_file != '.ipynb_checkpoints']
+    int_files  = [int_file for int_file in os.listdir(int_dir) if int_file != '.ipynb_checkpoints'] or int_file != '.DS_Store'
     
     save_count, exist_count, total = 0, 0, len(int_files)
     log_message('Load tracks start')
@@ -30,7 +30,7 @@ def load_tracks(col_tracks):
             log_message('Exist', [save_count, exist_count, total])
         else:
             save_count  += 1
-            col_tracks.save({
+            col_tracks.insert_one({
                 'extracted' : False, 
                 'file_name' : file_name,
                 'media_type': media_type,
@@ -52,9 +52,10 @@ def data_generation(col_tracks, col_loops):
     
     
     while 1:
+        
         try:
-            tracks   = col_tracks.find({'extracted': False})
-            total    = tracks.count() 
+            tracks   = list(col_tracks.find({'extracted': False}))
+            total    = len(tracks)
             count    = failed_count
             
             if total == 0 or count + 1 == total:
@@ -62,7 +63,6 @@ def data_generation(col_tracks, col_loops):
                 break
 
             for track in tracks[count:]:
-                
                 track_info      = track.copy() 
                 file_name       = track['file_name']
                 media_type      = track['media_type']
@@ -70,13 +70,18 @@ def data_generation(col_tracks, col_loops):
                 track_loop      = Pipeline(file_name, media_type, gpu_num, log_info)
                 track_loop_info = track_loop.start()
                 
+
+
                 track_info['extracted'] = True
-                col_tracks.save(track_info)
+                col_tracks.update_one({'_id': track_info['_id']}, {'$set': track_info}, upsert=True)
                 
                 find_item = col_loops.find_one({'file_name': file_name})
+                
                 if find_item:
                     track_loop_info['_id'] = find_item['_id']
-                col_loops.save(track_loop_info)
+                    
+                # col_loops.update_one({'_id': track_loop_info["_id"]}, {'$set': track_loop_info}, upsert=True)
+                col_loops.insert_one(track_loop_info)
 
                 count += 1
                 log_message('Save Success', log_info)

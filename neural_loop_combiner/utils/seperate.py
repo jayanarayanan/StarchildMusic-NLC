@@ -11,14 +11,14 @@ import librosa
 import filetype
 
 from spleeter.separator     import Separator
-from spleeter.audio.adapter import get_default_audio_adapter
+from spleeter.audio.adapter import AudioAdapter
 from neural_loop_combiner.utils.comparison import ssim_similarity
 from neural_loop_combiner.utils.utils      import check_files_exist
 from neural_loop_combiner.utils.utils      import save_audio, get_save_dir
 
 def ssp(file_path, sr, cache, out_dir):
     separator    = Separator('spleeter:5stems', multiprocess=False)
-    audio_loader = get_default_audio_adapter()
+    audio_loader = AudioAdapter.default()
     file_path    = os.path.join(out_dir, file_path)
     waveform, _  = audio_loader.load(file_path, sample_rate=sr)
     prediction   = separator.separate(waveform)

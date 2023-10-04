@@ -46,7 +46,9 @@ class Dataset:
         other_tracks_key  = [track_key for track_key in tracks_key if track_key not in test_tracks_key]
         
         pairs_num         = [len(tracks_dict[key]['pairs_path']) for key in other_tracks_key]
+        print(tracks_dict)
         pairs_acc         = [sum(pairs_num[0:i]) for i in range(1, len(pairs_num))]
+        print(pairs_acc)
         val_pairs_num     = math.floor(pairs_acc[-1] * (1 - split_ratio))
         split_index       = [i for i in range(len(pairs_acc)) if pairs_acc[i] > val_pairs_num][0]
         

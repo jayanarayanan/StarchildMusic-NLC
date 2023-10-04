@@ -28,7 +28,7 @@ HASH_THRESHOLD    = 5
 EXISTED_THRESHOLD = 0.2
 
 # Datasets
-TEST_SIZE   = 100
+TEST_SIZE   = 20
 SPLIT_RATIO = 0.8
 NG_TYPES    = {
     'shift'    : 1,

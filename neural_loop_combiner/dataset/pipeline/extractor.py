@@ -68,7 +68,7 @@ class Extractor:
         spectral_cube   = make_spectral_cube(track_audio, downbeat_frames)
         n_sounds, n_rhythms, n_loops = validate_template_sizes(spectral_cube, n_templates=[0,0,0])
         if type(core) == type(None) or type(factors) == type(None):
-            core, factors = tl.decomposition.non_negative_tucker(tl.tensor(np.abs(spectral_cube), device=f'cuda:{gpu_num}'), 
+            core, factors = tl.decomposition.non_negative_tucker(tl.tensor(np.abs(spectral_cube), device="cpu"), 
                                                                 [n_sounds, n_rhythms, n_loops], n_iter_max=500, verbose=True)
             core       = np.array(core.detach().to('cpu').numpy())
             factors    = [np.array(factor.detach().to('cpu').numpy()) for factor in factors]

@@ -40,7 +40,9 @@ def get_save_dir(out_dir, cat_dirs):
     return out_dir
 
 def get_file_name(file_path):
-    media_type = filetype.guess(file_path).extension 
+
+    # media_type = filetype.guess(file_path).extension 
+    media_type = "mp3"
     file_name  = os.path.split(file_path)[-1].split(f'.{media_type}')[0]
     return file_name, media_type
 
@@ -65,6 +67,7 @@ def pair_iteration(lst1, lst2):
 
 def pair_table_creation(template):
     pair_template = [v for v in template if sum(v) >= 2]
+    # print(pair_template)
     if len(pair_template) != 0:
         unique_bar = np.unique(pair_template, axis=0)
         pair_bar   = [sorted(y[0]) for y in (map(lambda x: np.where(x == True), unique_bar))]
@@ -72,6 +75,7 @@ def pair_table_creation(template):
         pair_table = [list(x) for x in pair_table]
     else:
         pair_table = []
+    # print(pair_table)
     return pair_table
 
 def data_shuffle(array):

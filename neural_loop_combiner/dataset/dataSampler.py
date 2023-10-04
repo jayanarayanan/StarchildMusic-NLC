@@ -6,7 +6,7 @@ import random
 import librosa
 import numpy as np
 from spleeter.separator     import Separator
-from spleeter.audio.adapter import get_default_audio_adapter
+from spleeter.audio.adapter import AudioAdapter
 from neural_loop_combiner.utils.utils     import log_message, data_exclude
 from neural_loop_combiner.config          import settings
 from neural_loop_combiner.dataset.sampler import Sampler

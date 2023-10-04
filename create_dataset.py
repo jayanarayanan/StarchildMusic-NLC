@@ -36,7 +36,9 @@ def loops_tag(col_tags, tracks, tag):
 
 def dataset_creation(col_datasets, tracks, harm_datas):
     tracks_dict  = {track['file_name']: track for track in tracks}
+    # print({track for track in tracks})
     log_message('Create dataset started')
+    # print(tracks_dict)
     dataset      = Dataset(tracks_dict, harm_datas).datas_retrieve()
     col_datasets.save(dataset)
     log_message('Create dataset completed')

@@ -1,6 +1,6 @@
 import imagehash
 from PIL import Image
-from skimage.measure import compare_ssim
+from skimage.metrics import structural_similarity as compare_ssim
 from imagehash import average_hash, phash, dhash, whash
 from mir_eval.separation import bss_eval_sources_framewise
 
